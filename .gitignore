@@ -1,7 +1,2 @@
 /.vscode
-/NMEAReceive.o
-/NMEATransmit.o
-/NMEAUtils.o
-/libNMEALib.a
-/main
-/main.c
+/bin
