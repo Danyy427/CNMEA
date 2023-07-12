@@ -57,9 +57,15 @@ extern “C”
 
     NMEAClause_t CreateNMEAClauseFromParamWithCopy(char *talkerId, char *format, char *data);
 
+    void FillNMEAClauseFromParamWithCopy(NMEAClause_t * clause, char *talkerId, char *format, char *data);
+
     NMEAClause_t CreateNMEAClauseFromParam(char *talkerId, char *format, char *data);
 
+    void FillNMEAClauseFromParam(NMEAClause_t * clause, char *talkerId, char *format, char *data);
+
     NMEAClause_t CreateNMEAClauseFromString(char *string);
+
+    void FillNMEAClauseFromString(NMEAClause_t * clause, char *string);
 
     char *NMEAClauseToString(NMEAClause_t * clause);
 

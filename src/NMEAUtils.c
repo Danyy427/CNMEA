@@ -85,6 +85,9 @@ NMEAPacketFlag_t ValidatePacket(NMEAClause_t *clause)
         results.packetIncorrectFormat = 1;
     }
 
+    results.packetValid = 1;
+    results.packetSuccess = 1;
+
     return results;
 }
 
