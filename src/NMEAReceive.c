@@ -38,10 +38,9 @@ void FillNMEAClauseFromParamWithCopy(NMEAClause_t *clause, char *talkerId, char 
     clause->dataFields[length] = 0;
 
     clause->checksumDelimiter = '*';
-    clause->checksum = CalculateNMEAChecksum(&clause);
+    clause->checksum = CalculateNMEAChecksum(clause);
     clause->terminator[0] = '\r';
     clause->terminator[1] = '\n';
-    return clause;
 }
 
 /*
@@ -69,10 +68,9 @@ void FillNMEAClauseFromParam(NMEAClause_t *clause, char *talkerId, char *format,
     memcpy(clause->sentenceFormatter, format, 3);
     clause->dataFields = data;
     clause->checksumDelimiter = '*';
-    clause->checksum = CalculateNMEAChecksum(&clause);
+    clause->checksum = CalculateNMEAChecksum(clause);
     clause->terminator[0] = '\r';
     clause->terminator[1] = '\n';
-    return clause;
 }
 
 /*
@@ -111,8 +109,7 @@ void FillNMEAClauseFromString(NMEAClause_t *clause, char *string)
     memcpy(clause->dataFields, string + 6, length - 9);
     clause->dataFields[length - 9] = 0;
     clause->checksumDelimiter = string[length - 3];
-    clause->checksum = CalculateNMEAChecksum(&clause);
+    clause->checksum = CalculateNMEAChecksum(clause);
     clause->terminator[0] = '\r';
     clause->terminator[1] = '\n';
-    return clause;
 }
