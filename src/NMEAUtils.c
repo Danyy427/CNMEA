@@ -4,7 +4,7 @@
 #include "string.h"
 
 /*
-    Expects a valid NMEA Packet as clause or as null-terminated string
+    Expects a valid NMEA Packet as clause or as null-terminated string - TESTED
 */
 
 checksum_t CalculateNMEAChecksum(NMEAClause_t *clause)
@@ -37,7 +37,7 @@ checksum_t CalculateNMEAChecksumFromString(char *clause)
 }
 
 /*
-    Validates the format and correctness of a NMEA packet, checks for format and checksum
+    Validates the format and correctness of a NMEA packet, checks for format and checksum - TESTED
 */
 
 NMEAPacketFlag_t ValidatePacket(NMEAClause_t *clause)
@@ -89,7 +89,42 @@ NMEAPacketFlag_t ValidatePacket(NMEAClause_t *clause)
 }
 
 /*
-    Separates data into datafield array
+    Separates data into datafield array - NOT TESTED
+    The `field` field of Datafield points to the start of the data field in the buffer
+    The `length` field is data's length
+*/
+
+void GetNMEADataBuffer(NMEAClause_t *clause, int *resultCount, DataField_t *buffer)
+{
+    int start = 0, count = 0;
+
+    for (size_t i = 0; i < strlen(clause->dataFields); i++)
+    {
+        if (clause->dataFields[i] == ',')
+            count++;
+    }
+    *resultCount = count;
+    int fieldsIte = 0;
+
+    for (size_t i = 0; i <= strlen(clause->dataFields); i++) // the <= doesn't look very sane
+    {
+        if (clause->dataFields[i] == ',' || clause->dataFields[i] == 0)
+        {
+            if (i != 0)
+            {
+                buffer[fieldsIte].field = &clause->dataFields[start + 1];
+                buffer[fieldsIte].length = i - start - 1;
+
+                fieldsIte++;
+            }
+
+            start = i;
+        }
+    }
+}
+
+/*
+    Separates data into datafield array - TESTED
     The `field` field of Datafield points to the start of the data field in the NMEA Clause
     The `length` field is data's length
 */
@@ -128,7 +163,7 @@ DataField_t *GetNMEADataPtr(NMEAClause_t *clause, int *resultCount)
 }
 
 /*
-    Separates data into datafield array
+    Separates data into datafield array - TESTED
     The `field` field of Datafield points to the start of the data field in a newly allocated location
     The `length` field is data's length
 */
@@ -170,6 +205,21 @@ DataField_t *GetNMEADataArray(NMEAClause_t *clause, int *resultCount)
     }
 
     return fields;
+}
+
+/*
+    Adds a new data to the NMEAClause, the ',' is added automatically. - NOT TESTED
+    BEWARE USES REALLOC
+*/
+
+void AddDataToNMEAClause(NMEAClause_t *clause, char *string)
+{
+    char *data = clause->dataFields;
+    int len = strlen(data);
+    int len1 = strlen(string);
+    data = realloc(data, len + len1 + 2);
+    strcat(data, ",");
+    strcat(data, string);
 }
 
 void DisposeDataPtr(DataField_t *fields)

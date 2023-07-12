@@ -4,7 +4,30 @@
 #include "string.h"
 
 /*
-    Creates a valid NMEA packet from parameters
+    Creates a valid NMEA packet from parameters by also allocating space for data - NOT TESTED
+*/
+
+NMEAClause_t CreateNMEAClauseFromParamWithCopy(char *talkerId, char *format, char *data)
+{
+    NMEAClause_t clause;
+    clause.signatureDelimiter = '$';
+    memcpy(clause.talkerId, talkerId, 2);
+    memcpy(clause.sentenceFormatter, format, 3);
+    size_t length = strlen(data);
+
+    clause.dataFields = malloc(length + 1);
+    memcpy(clause.dataFields, data, length);
+    clause.dataFields[length] = 0;
+
+    clause.checksumDelimiter = '*';
+    clause.checksum = CalculateNMEAChecksum(&clause);
+    clause.terminator[0] = '\r';
+    clause.terminator[1] = '\n';
+    return clause;
+}
+
+/*
+    Creates a valid NMEA packet from parameters - TESTED
 */
 
 NMEAClause_t CreateNMEAClauseFromParam(char *talkerId, char *format, char *data)
@@ -22,7 +45,7 @@ NMEAClause_t CreateNMEAClauseFromParam(char *talkerId, char *format, char *data)
 }
 
 /*
-    Turns string into NMEA Clause, expects string with format
+    Turns string into NMEA Clause, expects string with format - TESTED
     $TTFFF,DATA*HH
 */
 

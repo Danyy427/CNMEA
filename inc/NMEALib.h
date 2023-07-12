@@ -43,19 +43,27 @@ extern “C”
 
     NMEAPacketFlag_t ValidatePacket(NMEAClause_t * clause);
 
+    void GetNMEADataBuffer(NMEAClause_t * clause, int *resultCount, DataField_t *buffer);
+
     DataField_t *GetNMEADataPtr(NMEAClause_t * clause, int *resultCount);
 
     DataField_t *GetNMEADataArray(NMEAClause_t * clause, int *resultCount);
 
+    void AddDataToNMEAClause(NMEAClause_t * clause, char *string);
+
     void DisposeDataPtr(DataField_t * fields);
 
     void DisposeDataArray(DataField_t * fields, int len);
+
+    NMEAClause_t CreateNMEAClauseFromParamWithCopy(char *talkerId, char *format, char *data);
 
     NMEAClause_t CreateNMEAClauseFromParam(char *talkerId, char *format, char *data);
 
     NMEAClause_t CreateNMEAClauseFromString(char *string);
 
     char *NMEAClauseToString(NMEAClause_t * clause);
+
+    void NMEAClauseToStringBuffer(NMEAClause_t * clause, char *buffer);
 
     void InitTransmitter(void (*transmitter)(void *, char *, short, int));
 

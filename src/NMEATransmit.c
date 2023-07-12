@@ -4,7 +4,7 @@
 #include "string.h"
 
 /*
-    Creates a valid NMEA packet from a string
+    Creates a valid NMEA packet from a string - TESTED
 */
 
 char *NMEAClauseToString(NMEAClause_t *clause)
@@ -31,7 +31,31 @@ char *NMEAClauseToString(NMEAClause_t *clause)
 }
 
 /*
-    Initializes a transmitter function
+    Creates a valid NMEA packet from a string and fills it into a buffer - NOT TESTED
+*/
+
+void NMEAClauseToStringBuffer(NMEAClause_t *clause, char *buffer)
+{
+    int datalen = strlen(clause->dataFields);
+    buffer[0] = clause->signatureDelimiter;
+    memcpy(buffer + 1, &clause->talkerId, 5);
+
+    for (size_t i = 0; i < datalen; i++)
+    {
+        buffer[i + 6] = clause->dataFields[i];
+    }
+
+    buffer[datalen + 6] = clause->checksumDelimiter;
+    char checksumStr[3] = {0};
+    sprintf(checksumStr, "%02x", clause->checksum);
+    memcpy(buffer + datalen + 7, checksumStr, 2);
+    buffer[datalen + 9] = '\r';
+    buffer[datalen + 10] = '\n';
+    buffer[datalen + 11] = 0;
+}
+
+/*
+    Initializes a transmitter function - NOT TESTED
 */
 
 static void (*NMEATransmitter)(void *, char *, short, int);
@@ -43,7 +67,7 @@ void InitTransmitter(void (*transmitter)(void *, char *, short, int))
 }
 
 /*
-    Transmits a clause
+    Transmits a clause - NOT TESTED
 */
 
 void TransmitNMEAPacket(void *channel, NMEAClause_t *clause)
