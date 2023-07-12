@@ -30,6 +30,10 @@ char *NMEAClauseToString(NMEAClause_t *clause)
     return NmeaClause;
 }
 
+/*
+    Initializes a transmitter function
+*/
+
 static void (*NMEATransmitter)(void *, char *, short, int);
 static int isInitialized = 0;
 void InitTransmitter(void (*transmitter)(void *, char *, short, int))
@@ -38,7 +42,11 @@ void InitTransmitter(void (*transmitter)(void *, char *, short, int))
     isInitialized = 1;
 }
 
-void TransmitNMEAPacket(void *uart, NMEAClause_t *clause)
+/*
+    Transmits a clause
+*/
+
+void TransmitNMEAPacket(void *channel, NMEAClause_t *clause)
 {
     if (isInitialized == 0)
         return;
@@ -46,6 +54,6 @@ void TransmitNMEAPacket(void *uart, NMEAClause_t *clause)
     char *str = NMEAClauseToString(clause);
     for (size_t i = 0; i < strlen(str); i++)
     {
-        NMEATransmitter(uart, &str[i], 1, 0xFF);
+        NMEATransmitter(channel, &str[i], 1, 0xFF);
     }
 }

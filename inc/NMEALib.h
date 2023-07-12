@@ -59,7 +59,7 @@ extern “C”
 
     void InitTransmitter(void (*transmitter)(void *, char *, short, int));
 
-    void TransmitNMEAPacket(void *uart, NMEAClause_t *clause);
+    void TransmitNMEAPacket(void *channel, NMEAClause_t *clause);
 
 #ifdef __cplusplus
 }

@@ -90,6 +90,8 @@ NMEAPacketFlag_t ValidatePacket(NMEAClause_t *clause)
 
 /*
     Separates data into datafield array
+    The `field` field of Datafield points to the start of the data field in the NMEA Clause
+    The `length` field is data's length
 */
 
 DataField_t *GetNMEADataPtr(NMEAClause_t *clause, int *resultCount)
@@ -124,6 +126,12 @@ DataField_t *GetNMEADataPtr(NMEAClause_t *clause, int *resultCount)
 
     return fields;
 }
+
+/*
+    Separates data into datafield array
+    The `field` field of Datafield points to the start of the data field in a newly allocated location
+    The `length` field is data's length
+*/
 
 DataField_t *GetNMEADataArray(NMEAClause_t *clause, int *resultCount)
 {
